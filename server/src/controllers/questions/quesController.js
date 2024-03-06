@@ -56,7 +56,7 @@ const fetchSingleQues = async (req, res, next) => {
 
 const createQues = async (req, res, next) => {
   const { userid } = req.user;
-  const { qid, title, description } = req.body;
+  const { title, description } = req.body;
   try {
     const { error, output } = await createQuesQuery(
       userid,

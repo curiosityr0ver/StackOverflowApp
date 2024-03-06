@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Button } from '@chakra-ui/react';
 import NewQuestionModal from '../../Components/NewQuestionModal';
 import axios from "axios";
+import { SmallCloseIcon, EditIcon } from '@chakra-ui/icons';
 import "./Allques.css";
 const Myquestions = () => {
   const [questions, setQuestions] = useState([]);
@@ -12,7 +13,6 @@ const Myquestions = () => {
   }, []);
 
   const fetchMyQuestions = async () => {
-    console.log(localStorage.getItem("token"));
 
     try {
       const { data } = await axios.get(
@@ -56,6 +56,31 @@ const Myquestions = () => {
     }
   };
 
+  const handleAnswerDelete = async (id) => {
+    // return console.log(id);
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:5000/ans/${id}`,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleQuestionDelete = async (id) => {
+    // return console.log(id);
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:5000/ques/${id}`,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const processDate = (date) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", {
       year: 'numeric',
@@ -81,6 +106,7 @@ const Myquestions = () => {
             <th>Description</th>
             <th>Created</th>
             <th>Updated</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -92,6 +118,7 @@ const Myquestions = () => {
                 <td>{question.description}</td>
                 <td>{processDate(question.created)}</td>
                 <td>{processDate(question.updated)}</td>
+                <td> <Box display={"flex"} justifyContent={"space-around"}> <EditIcon _hover={{ color: "darkgrey" }} /> <SmallCloseIcon onClick={() => handleQuestionDelete(question.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} /></Box></td>
               </tr>
             );
           })}
@@ -104,6 +131,7 @@ const Myquestions = () => {
             <th>Description</th>
             <th>Created</th>
             <th>Updated</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -112,6 +140,7 @@ const Myquestions = () => {
               <td>{answer.description}</td>
               <td >{processDate(answer.created)}</td>
               <td>{processDate(answer.updated)}</td>
+              <td> <Box display={"flex"} justifyContent={"space-around"}> <EditIcon _hover={{ color: "darkgrey" }} /> <SmallCloseIcon onClick={() => handleAnswerDelete(answer.aid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} /></Box></td>
             </tr>
           ))}
         </tbody>

@@ -32,7 +32,6 @@ const NewTaskModal = ({ children }) => {
 
 
     const handleSubmit = async () => {
-        console.log(localStorage.getItem("token"));
         if (!title || !description) {
             toast({
                 title: `Please add ${type} title and description`,
@@ -64,7 +63,6 @@ const NewTaskModal = ({ children }) => {
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
                 // config
             );
-            console.log(data);
             // setTasks([data, ...tasks]);
             onClose();
             toast({

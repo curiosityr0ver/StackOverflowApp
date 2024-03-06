@@ -46,8 +46,6 @@ const fetchMyQuesQuery = async (id) => {
 
 const createQuesQuery = async (userid, title, description) => {
     // console.log(qid, userid, title, description);
-
-
     try {
         const connection = await pool.getConnection();
         const [rows] = await connection.execute('INSERT INTO questions(userid, title, description) Values(?,?,?)', [userid, title, description]);
@@ -55,6 +53,7 @@ const createQuesQuery = async (userid, title, description) => {
             connection.release();
         }, 250);
         if (rows) connection.release();
+        // console.log(rows);
         return { error: null, output: rows };
     } catch (error) {
         return { error: error, output: null };
