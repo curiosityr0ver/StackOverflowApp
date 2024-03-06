@@ -8,6 +8,7 @@ const verifyToken = (req, res, next) => {
 
     jwt.verify(token, secretKey, (err, decodedToken) => {
       if (!err) {
+        console.log(decodedToken);
         req.user = decodedToken;
         // console.log(req.user);
         next();

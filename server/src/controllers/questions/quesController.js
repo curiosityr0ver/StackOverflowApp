@@ -55,14 +55,15 @@ const fetchSingleQues = async (req, res, next) => {
 };
 
 const createQues = async (req, res, next) => {
-  const { qid, userid, title, description } = req.body;
+  const { userid } = req.user;
+  const { qid, title, description } = req.body;
   try {
     const { error, output } = await createQuesQuery(
-      qid,
       userid,
       title,
       description
     );
+    console.log(output);
     if (error) {
       throw new CustomError("Error creating question", 401);
     } else {

@@ -44,11 +44,13 @@ const fetchMyQuesQuery = async (id) => {
     }
 };
 
-const createQuesQuery = async (qid, userid, title, description) => {
+const createQuesQuery = async (userid, title, description) => {
+    // console.log(qid, userid, title, description);
+
 
     try {
         const connection = await pool.getConnection();
-        const [rows] = await connection.execute('INSERT INTO questions(qid, userid, title, description) Values(?,?,?,?)', [qid, userid, title, description]);
+        const [rows] = await connection.execute('INSERT INTO questions(userid, title, description) Values(?,?,?)', [userid, title, description]);
         setTimeout(() => {
             connection.release();
         }, 250);

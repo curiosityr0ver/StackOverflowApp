@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { Box, Button } from '@chakra-ui/react';
+import NewQuestionModal from '../../Components/NewQuestionModal';
 import axios from "axios";
 import "./Allques.css";
 const Myquestions = () => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
   useEffect(() => {
-    fetchAllQuestions();
+    fetchMyQuestions();
     fetchAllAnswers();
   }, []);
 
   const fetchMyQuestions = async () => {
+    console.log(localStorage.getItem("token"));
+
     try {
       const { data } = await axios.get(
         "http://localhost:5000/ques/my",
@@ -111,6 +115,11 @@ const Myquestions = () => {
             </tr>
           ))}
         </tbody>
+
+        <NewQuestionModal >
+          <Button colorScheme='blue'>Button</Button>
+        </NewQuestionModal>
+
       </table>
     </div>
 
