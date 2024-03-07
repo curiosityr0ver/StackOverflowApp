@@ -6,26 +6,26 @@ import { SmallCloseIcon, EditIcon } from '@chakra-ui/icons';
 import { useLocation } from 'react-router-dom';
 
 const SingleQuestion = () => {
+    const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState([]);
-    const [comments, setComments] = useState([]);
     const location = useLocation();
     const [quesID, setQuesID] = useState();
 
     useEffect(() => {
         setQuesID(location.pathname.split('/')[3]);
-        fetchMyAnswer();
+        fetchMyQuestions();
         fetchMyAnswers();
     }, []);
 
-    const fetchMyAnswer = async () => {
+    const fetchMyQuestions = async () => {
 
         try {
             const { data } = await axios.get(
-                `http://localhost:5000/ans/${location.pathname.split('/')[3]}`,
+                `http://localhost:5000/ques/${location.pathname.split('/')[3]}`,
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
             );
             console.log(data.body);
-            if (data.body) setAnswers(data.body);
+            if (data.body) setQuestions(data.body);
         } catch (err) {
             console.log(err);
         }
@@ -35,11 +35,10 @@ const SingleQuestion = () => {
     const fetchMyAnswers = async () => {
         try {
             const { data } = await axios.get(
-                // `http://localhost:5000/comment/ans/${location.pathname.split('/')[3]}`,
-                `http://localhost:5000/comments/`,
+                `http://localhost:5000/ans/ques/${location.pathname.split('/')[3]}`,
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
             );
-            if (data.body) setComments(data.body);
+            if (data.body) setAnswers(data.body);
         } catch (err) {
             console.log(err);
         }
@@ -64,8 +63,8 @@ const SingleQuestion = () => {
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
             );
             if (data) {
-                console.log([...answers.filter((q) => q.id !== id)]);
-                setAnswers(answers.filter((q) => q.qid !== id));
+                console.log([...questions.filter((q) => q.id !== id)]);
+                setQuestions(questions.filter((q) => q.qid !== id));
             }
             // console.log(data);
         } catch (err) {
@@ -90,7 +89,7 @@ const SingleQuestion = () => {
 
     return (
         <div className="container">
-            <h4> Answer {quesID}</h4>
+            <h4> Question {quesID}</h4>
             <table>
                 <thead>
                     <tr>
@@ -102,7 +101,7 @@ const SingleQuestion = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {answers.map((question) => {
+                    {questions.map((question) => {
                         // console.log(processDate(question.created));
                         return (
                             <tr key={question.qid}>
@@ -119,7 +118,7 @@ const SingleQuestion = () => {
                     })}
                 </tbody>
             </table>
-            <h4> Comments for answer {quesID}</h4>
+            <h4> Questions for answer {quesID}</h4>
             <table>
                 <thead>
                     <tr>
@@ -130,7 +129,7 @@ const SingleQuestion = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {comments.map((answer) => (
+                    {answers.length > 0 && answers.map((answer) => (
                         <tr key={answer.aid}>
                             <td>{answer.description}</td>
                             <td >{processDate(answer.created)}</td>
@@ -139,11 +138,9 @@ const SingleQuestion = () => {
                         </tr>
                     ))}
                 </tbody>
-
                 <NewAnswerModal qid={quesID} >
-                    <Button colorScheme='blue'>Comment</Button>
+                    <Button colorScheme='blue'>Answer</Button>
                 </NewAnswerModal>
-
             </table>
         </div>
 
