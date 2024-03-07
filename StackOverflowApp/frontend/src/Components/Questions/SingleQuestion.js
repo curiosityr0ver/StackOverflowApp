@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Box, Button } from '@chakra-ui/react';
 import NewAnswerModal from '../NewAnswerModal';
 import axios from "axios";
-import { SmallCloseIcon, EditIcon } from '@chakra-ui/icons';
+import { SmallCloseIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const SingleQuestion = () => {
     const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState([]);
     const location = useLocation();
     const [quesID, setQuesID] = useState();
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         setQuesID(location.pathname.split('/')[3]);
@@ -118,7 +121,7 @@ const SingleQuestion = () => {
                     })}
                 </tbody>
             </table>
-            <h4> Questions for answer {quesID}</h4>
+            <h4> Answers for Question {quesID}</h4>
             <table>
                 <thead>
                     <tr>
@@ -134,7 +137,11 @@ const SingleQuestion = () => {
                             <td>{answer.description}</td>
                             <td >{processDate(answer.created)}</td>
                             <td>{processDate(answer.updated)}</td>
-                            <td> <Box display={"flex"} justifyContent={"space-around"}> <EditIcon _hover={{ color: "darkgrey" }} /> <SmallCloseIcon onClick={() => handleAnswerDelete(answer.aid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} /></Box></td>
+                            <td> <Box display={"flex"} justifyContent={"space-around"}>
+                                <EditIcon _hover={{ color: "darkgrey" }} />
+                                <SmallCloseIcon onClick={() => handleAnswerDelete(answer.aid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
+                                <LinkIcon onClick={() => navigate(`../ans/single/${answer.aid}`)} _hover={{ color: "darkgrey" }} />
+                            </Box></td>
                         </tr>
                     ))}
                 </tbody>

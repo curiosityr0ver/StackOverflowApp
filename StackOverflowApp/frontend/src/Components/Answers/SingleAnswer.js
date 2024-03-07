@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button } from '@chakra-ui/react';
-import NewAnswerModal from '../NewAnswerModal';
+import NewCommentModal from '../NewCommentModal';
 import axios from "axios";
 import { SmallCloseIcon, EditIcon } from '@chakra-ui/icons';
 import { useLocation } from 'react-router-dom';
@@ -9,10 +9,10 @@ const SingleQuestion = () => {
     const [answers, setAnswers] = useState([]);
     const [comments, setComments] = useState([]);
     const location = useLocation();
-    const [quesID, setQuesID] = useState();
+    const [ansID, setAnsID] = useState();
 
     useEffect(() => {
-        setQuesID(location.pathname.split('/')[3]);
+        setAnsID(location.pathname.split('/')[3]);
         fetchMyAnswer();
         fetchMyAnswers();
     }, []);
@@ -90,7 +90,7 @@ const SingleQuestion = () => {
 
     return (
         <div className="container">
-            <h4> Answer {quesID}</h4>
+            <h4> Answer {ansID}</h4>
             <table>
                 <thead>
                     <tr>
@@ -111,7 +111,7 @@ const SingleQuestion = () => {
                                 <td>{processDate(question.created)}</td>
                                 <td>{processDate(question.updated)}</td>
                                 <td> <Box display={"flex"} justifyContent={"space-around"}>
-                                    <NewAnswerModal > <EditIcon _hover={{ color: "darkgrey" }} /> </NewAnswerModal>
+                                    <NewCommentModal > <EditIcon _hover={{ color: "darkgrey" }} /> </NewCommentModal>
                                     <SmallCloseIcon onClick={() => handleQuestionDelete(question.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
                                 </Box></td>
                             </tr>
@@ -119,7 +119,7 @@ const SingleQuestion = () => {
                     })}
                 </tbody>
             </table>
-            <h4> Comments for answer {quesID}</h4>
+            <h4> Comments for answer {ansID}</h4>
             <table>
                 <thead>
                     <tr>
@@ -140,9 +140,9 @@ const SingleQuestion = () => {
                     ))}
                 </tbody>
 
-                <NewAnswerModal qid={quesID} >
+                <NewCommentModal aid={ansID} >
                     <Button colorScheme='blue'>Comment</Button>
-                </NewAnswerModal>
+                </NewCommentModal>
 
             </table>
         </div>

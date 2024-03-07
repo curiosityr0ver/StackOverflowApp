@@ -126,7 +126,7 @@ const Myquestions = () => {
                 <td> <Box display={"flex"} justifyContent={"space-around"}>
                   <NewQuestionModal > <EditIcon _hover={{ color: "darkgrey" }} /> </NewQuestionModal>
                   <SmallCloseIcon onClick={() => handleQuestionDelete(question.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
-                  <LinkIcon onClick={() => navigate(`../ques/single/${question.qid}`)} _hover={{ col: "darkgrey" }} />
+                  <LinkIcon onClick={() => navigate(`../ques/single/${question.qid}`)} _hover={{ color: "darkgrey" }} />
 
                 </Box></td>
               </tr>
@@ -150,7 +150,11 @@ const Myquestions = () => {
               <td>{answer.description}</td>
               <td >{processDate(answer.created)}</td>
               <td>{processDate(answer.updated)}</td>
-              <td> <Box display={"flex"} justifyContent={"space-around"}> <EditIcon _hover={{ color: "darkgrey" }} /> <SmallCloseIcon onClick={() => handleAnswerDelete(answer.aid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} /></Box></td>
+              <td> <Box display={"flex"} justifyContent={"space-around"}>
+                <EditIcon _hover={{ color: "darkgrey" }} />
+                <SmallCloseIcon onClick={() => handleAnswerDelete(answer.aid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
+                <LinkIcon onClick={() => navigate(`../ans/single/${answer.aid}`)} _hover={{ color: "darkgrey" }} />
+              </Box></td>
             </tr>
           ))}
         </tbody>

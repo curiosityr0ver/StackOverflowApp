@@ -1,5 +1,3 @@
-const mysql = require("mysql2");
-const pool = require("../../utils/db");
 const response = require("../../utils/response");
 const {
   fetchCommentsQuery,
@@ -37,10 +35,10 @@ const fetchSingleComment = async (req, res, next) => {
   }
 };
 const createComment = async (req, res, next) => {
-  const { commentid, userid, aid, description } = req.body;
+  const { aid, description } = req.body;
+  const { userid } = req.user;
   try {
     const { error, output } = await createCommentQuery(
-      commentid,
       userid,
       aid,
       description
@@ -48,6 +46,7 @@ const createComment = async (req, res, next) => {
     if (error) {
       throw new CustomError("Error creating comment", 401);
     } else {
+
       response(200, "Comment created successfully", output, res);
     }
   } catch (error) {

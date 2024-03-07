@@ -23,12 +23,12 @@ const fetchSingleCommentQuery = async (id) => {
   }
 };
 
-const createCommentQuery = async (commentid, userid, aid, description) => {
+const createCommentQuery = async (userid, aid, description) => {
   try {
     const connection = await pool.getConnection();
     const [rows] = await connection.execute(
-      "INSERT INTO comments(commentid, userid, aid, description) VALUES (?, ?, ?, ?)",
-      [commentid, userid, aid, description]
+      "INSERT INTO comments(userid, aid, description) VALUES (?, ?, ?)",
+      [userid, aid, description]
     );
     return { error: null, output: rows };
   } catch (error) {
