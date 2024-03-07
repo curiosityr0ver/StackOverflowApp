@@ -86,7 +86,7 @@ const NewTaskModal = ({ children }) => {
 
     return (
         <>
-            <span onClick={onOpen}>{children}</span>
+            <div style={{ display: "flex" }} onClick={onOpen}>{children}</div>
             <Modal onClose={onClose} isOpen={isOpen} isCentered>
                 <ModalOverlay />
                 <ModalContent>

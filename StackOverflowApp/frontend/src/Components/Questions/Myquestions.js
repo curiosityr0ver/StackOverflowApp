@@ -126,7 +126,7 @@ const Myquestions = () => {
                 <td> <Box display={"flex"} justifyContent={"space-around"}>
                   <NewQuestionModal > <EditIcon _hover={{ color: "darkgrey" }} /> </NewQuestionModal>
                   <SmallCloseIcon onClick={() => handleQuestionDelete(question.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
-                  <LinkIcon onClick={() => navigate("../ques/single/2")} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
+                  <LinkIcon onClick={() => navigate("../ques/single/2")} _hover={{ col: "darkgrey" }} />
 
                 </Box></td>
               </tr>
