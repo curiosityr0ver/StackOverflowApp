@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Myquestions from "../Components/Questions/Myquestions";
 import Allquestions from "../Components/Questions/Allquestions";
-import SingleQuestion from "../Components/Answers/SingleQuestion";
+import SingleQuestion from "../Components/Answers/SingleAnswer";
 import Login from "../Components/Authentication/Login";
 import Register from "../Components/Authentication/Register";
 import Myanswers from "../Components/Answers/Myanswers";

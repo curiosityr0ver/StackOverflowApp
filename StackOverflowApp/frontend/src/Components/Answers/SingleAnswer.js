@@ -5,7 +5,6 @@ import axios from "axios";
 import { SmallCloseIcon, EditIcon } from '@chakra-ui/icons';
 import { useLocation } from 'react-router-dom';
 
-import "./Allques.css";
 const SingleQuestion = () => {
     const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState([]);
@@ -90,7 +89,7 @@ const SingleQuestion = () => {
 
     return (
         <div className="container">
-            <h4> Question {quesID}</h4>
+            <h4> Answer {quesID}</h4>
             <table>
                 <thead>
                     <tr>
@@ -119,7 +118,7 @@ const SingleQuestion = () => {
                     })}
                 </tbody>
             </table>
-            <h4> Answers for question {quesID}</h4>
+            <h4> Comments for answer {quesID}</h4>
             <table>
                 <thead>
                     <tr>
