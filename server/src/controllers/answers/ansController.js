@@ -64,10 +64,13 @@ const fetchSingleQuesAns = async (req, res, next) => {
 };
 
 const createAns = async (req, res, next) => {
-  const { aid, userid, qid, description } = req.body;
+  const { qid, description } = req.body;
+  const { userid } = req.user;
+  console.log("Hereeeee");
+  // return console.log(userid, qid, description);
+
   try {
     const { error, output } = await createAnsQuery(
-      aid,
       userid,
       qid,
       description

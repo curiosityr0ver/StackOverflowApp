@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button } from '@chakra-ui/react';
-import NewQuestionModal from '../../Components/NewQuestionModal';
+import NewAnswerModal from '../NewAnswerModal';
 import axios from "axios";
 import { SmallCloseIcon, EditIcon } from '@chakra-ui/icons';
 import { useLocation } from 'react-router-dom';
@@ -111,7 +111,7 @@ const SingleQuestion = () => {
                                 <td>{processDate(question.created)}</td>
                                 <td>{processDate(question.updated)}</td>
                                 <td> <Box display={"flex"} justifyContent={"space-around"}>
-                                    <NewQuestionModal > <EditIcon _hover={{ color: "darkgrey" }} /> </NewQuestionModal>
+                                    <NewAnswerModal > <EditIcon _hover={{ color: "darkgrey" }} /> </NewAnswerModal>
                                     <SmallCloseIcon onClick={() => handleQuestionDelete(question.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
                                 </Box></td>
                             </tr>
@@ -140,9 +140,9 @@ const SingleQuestion = () => {
                     ))}
                 </tbody>
 
-                <NewQuestionModal >
-                    <Button colorScheme='blue'>Button</Button>
-                </NewQuestionModal>
+                <NewAnswerModal qid={quesID} >
+                    <Button colorScheme='blue'>Answer</Button>
+                </NewAnswerModal>
 
             </table>
         </div>

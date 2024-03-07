@@ -55,12 +55,12 @@ const fetchMyAnsQuery = async (id) => {
   }
 };
 
-const createAnsQuery = async (aid, userid, title, description) => {
+const createAnsQuery = async (userid, qid, description) => {
   try {
     const connection = await pool.getConnection();
     const [rows] = await connection.execute(
-      "INSERT INTO answers(aid, userid, title, description) Values(?,?,?,?)",
-      [aid, userid, title, description]
+      "INSERT INTO answers(userid, qid, description) Values(?,?,?)",
+      [userid, qid, description]
     );
     return { error: null, output: rows };
   } catch (error) {
