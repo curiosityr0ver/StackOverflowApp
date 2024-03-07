@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Box, Button } from '@chakra-ui/react';
 import NewQuestionModal from '../../Components/NewQuestionModal';
 import axios from "axios";
-import { SmallCloseIcon, EditIcon } from '@chakra-ui/icons';
+import { SmallCloseIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
 import "./Allques.css";
+import { useNavigate } from "react-router-dom";
 const Myquestions = () => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     fetchMyQuestions();
     fetchAllAnswers();
@@ -124,6 +126,8 @@ const Myquestions = () => {
                 <td> <Box display={"flex"} justifyContent={"space-around"}>
                   <NewQuestionModal > <EditIcon _hover={{ color: "darkgrey" }} /> </NewQuestionModal>
                   <SmallCloseIcon onClick={() => handleQuestionDelete(question.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
+                  <LinkIcon onClick={() => navigate("../ques/single/2")} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
+
                 </Box></td>
               </tr>
             );
