@@ -45,11 +45,11 @@ const SingleQuestion = () => {
         }
     };
 
-    const handleAnswerDelete = async (id) => {
+    const handleCommentDelete = async (id) => {
         // return console.log(id);
         try {
             const { data } = await axios.delete(
-                `http://localhost:5000/ans/${id}`,
+                `http://localhost:5000/comments/${id}`,
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
             );
             console.log(data);
@@ -57,10 +57,10 @@ const SingleQuestion = () => {
             console.log(err);
         }
     };
-    const handleQuestionDelete = async (id) => {
+    const handleAnswerDelete = async (id) => {
         try {
             const { data } = await axios.delete(
-                `http://localhost:5000/ques/${id}`,
+                `http://localhost:5000/ans/${id}`,
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
             );
             if (data) {
@@ -102,17 +102,17 @@ const SingleQuestion = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {answers.map((question) => {
+                    {answers.map((ans) => {
                         // console.log(processDate(question.created));
                         return (
-                            <tr key={question.qid}>
-                                <td>{question.title}</td>
-                                <td>{question.description}</td>
-                                <td>{processDate(question.created)}</td>
-                                <td>{processDate(question.updated)}</td>
+                            <tr key={ans.qid}>
+                                <td>{ans.title}</td>
+                                <td>{ans.description}</td>
+                                <td>{processDate(ans.created)}</td>
+                                <td>{processDate(ans.updated)}</td>
                                 <td> <Box display={"flex"} justifyContent={"space-around"}>
                                     <NewCommentModal > <EditIcon _hover={{ color: "darkgrey" }} /> </NewCommentModal>
-                                    <SmallCloseIcon onClick={() => handleQuestionDelete(question.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
+                                    <SmallCloseIcon onClick={() => handleAnswerDelete(ans.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
                                 </Box></td>
                             </tr>
                         );
@@ -130,12 +130,15 @@ const SingleQuestion = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {comments.map((answer) => (
-                        <tr key={answer.aid}>
-                            <td>{answer.description}</td>
-                            <td >{processDate(answer.created)}</td>
-                            <td>{processDate(answer.updated)}</td>
-                            <td> <Box display={"flex"} justifyContent={"space-around"}> <EditIcon _hover={{ color: "darkgrey" }} /> <SmallCloseIcon onClick={() => handleAnswerDelete(answer.aid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} /></Box></td>
+                    {comments.map((cmt) => (
+                        <tr key={cmt.cid}>
+                            <td>{cmt.description}</td>
+                            <td >{processDate(cmt.created)}</td>
+                            <td>{processDate(cmt.updated)}</td>
+                            <td> <Box display={"flex"} justifyContent={"space-around"}>
+                                <EditIcon _hover={{ color: "darkgrey" }} />
+                                <SmallCloseIcon onClick={() => handleCommentDelete(cmt.cid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
+                            </Box></td>
                         </tr>
                     ))}
                 </tbody>

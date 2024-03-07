@@ -70,6 +70,7 @@ const updateComment = async (req, res, next) => {
 };
 const deleteComment = async (req, res, next) => {
   const id = req.params.id;
+  // return console.log(id);
   try {
     const { error, output } = await deleteCommentQuery(id);
     if (error) {

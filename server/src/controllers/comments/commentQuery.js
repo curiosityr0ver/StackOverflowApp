@@ -53,8 +53,8 @@ const deleteCommentQuery = async (id) => {
   try {
     const connection = await pool.getConnection();
     const [rows] = await connection.execute(
-      "DELETE FROM comments WHERE commentid = ? OR parentcommentid = ?",
-      [id, id]
+      "DELETE FROM comments WHERE cid = ?",
+      [id]
     );
     return { error: null, output: rows };
   } catch (error) {
