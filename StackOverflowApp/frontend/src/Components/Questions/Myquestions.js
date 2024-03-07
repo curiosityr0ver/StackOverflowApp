@@ -4,6 +4,7 @@ import NewQuestionModal from '../../Components/NewQuestionModal';
 import axios from "axios";
 import { SmallCloseIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
 import "./Allques.css";
+import { Switch } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
 const Myquestions = () => {
   const [questions, setQuestions] = useState([]);
@@ -65,6 +66,9 @@ const Myquestions = () => {
         `http://localhost:5000/ans/${id}`,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
+      if (data) {
+        setAnswers(questions.filter((a) => a.aid !== id));
+      }
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -77,7 +81,7 @@ const Myquestions = () => {
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
       if (data) {
-        console.log([...questions.filter((q) => q.id !== id)]);
+        // console.log([...questions.filter((q) => q.id !== id)]);
         setQuestions(questions.filter((q) => q.qid !== id));
       }
       console.log(data);
