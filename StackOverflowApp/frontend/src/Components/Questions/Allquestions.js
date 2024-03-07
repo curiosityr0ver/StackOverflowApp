@@ -1,6 +1,6 @@
 import axios from "axios";
 import "./Allques.css";
-
+import { Box, Button } from '@chakra-ui/react';
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 function Allquestions() {
@@ -16,10 +16,9 @@ function Allquestions() {
 
   const fetchQuestions = async () => {
     try {
-      const result = await axios.get("http://localhost:3000/ques");
-      const data = result.data.data.body;
+      const { data } = await axios.get("http://localhost:5000/ques");
       // if (mounted) {
-      setQuestions(data);
+      setQuestions(data.body);
       // }
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -27,13 +26,16 @@ function Allquestions() {
   };
   return (
     <div className="container">
-      <h4 > <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/1280px-Stack_Overflow_logo.svg.png" style={{ width: "200px", height: "80px" , objectFit:"contain" }} /></h4>
-      <Link to="/login">
-        <button>Login</button>
-      </Link>
-      <Link to="/register">
-        <button>Register</button>
-      </Link>
+      <h4 > <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/1280px-Stack_Overflow_logo.svg.png" style={{ width: "200px", height: "80px", objectFit: "contain" }} /></h4>
+      <Box display={"flex"} p={"0% 25%"} justifyItems={"center"} justifyContent={"space-evenly"}>
+        <Link to="/login">
+          <Button colorScheme="red">Login</Button>
+        </Link>
+        <Link to="/register">
+          <Button colorScheme="blue">Register</Button>
+        </Link>
+      </Box>
+
       <table>
         <thead>
           <tr>
