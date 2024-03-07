@@ -69,12 +69,15 @@ const Myquestions = () => {
     }
   };
   const handleQuestionDelete = async (id) => {
-    // return console.log(id);
     try {
       const { data } = await axios.delete(
         `http://localhost:5000/ques/${id}`,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
+      if (data) {
+        console.log([...questions.filter((q) => q.id !== id)]);
+        setQuestions(questions.filter((q) => q.qid !== id));
+      }
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -118,7 +121,10 @@ const Myquestions = () => {
                 <td>{question.description}</td>
                 <td>{processDate(question.created)}</td>
                 <td>{processDate(question.updated)}</td>
-                <td> <Box display={"flex"} justifyContent={"space-around"}> <EditIcon _hover={{ color: "darkgrey" }} /> <SmallCloseIcon onClick={() => handleQuestionDelete(question.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} /></Box></td>
+                <td> <Box display={"flex"} justifyContent={"space-around"}>
+                  <NewQuestionModal > <EditIcon _hover={{ color: "darkgrey" }} /> </NewQuestionModal>
+                  <SmallCloseIcon onClick={() => handleQuestionDelete(question.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
+                </Box></td>
               </tr>
             );
           })}

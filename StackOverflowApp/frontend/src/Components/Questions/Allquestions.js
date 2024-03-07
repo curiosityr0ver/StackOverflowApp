@@ -24,10 +24,25 @@ function Allquestions() {
       console.error("Error fetching questions:", error);
     }
   };
+  const processDate = (date) => {
+    const formattedDate = new Date(date).toLocaleDateString("en-US", {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    const formattedTime = new Date(date).toLocaleTimeString("en-US", {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
+    return formattedDate + " • " + formattedTime;
+  };
+
   return (
     <div className="container">
-      <h4 > <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/1280px-Stack_Overflow_logo.svg.png" style={{ width: "200px", height: "80px", objectFit: "contain" }} /></h4>
-      <Box display={"flex"} p={"0% 25%"} justifyItems={"center"} justifyContent={"space-evenly"}>
+      <Box w={"100%"} display={"flex"} alignItems={"center"} justifyItems={"center"} justifyContent={"space-evenly"}>
+        <h4 > <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/1280px-Stack_Overflow_logo.svg.png" style={{ width: "200px", height: "80px", objectFit: "contain" }} /></h4>
+
         <Link to="/login">
           <Button colorScheme="red">Login</Button>
         </Link>
@@ -50,8 +65,8 @@ function Allquestions() {
             <tr key={question.qid}>
               <td>{question.title}</td>
               <td>{question.description}</td>
-              <td>{question.created}</td>
-              <td>{question.updated}</td>
+              <td>{processDate(question.created)}</td>
+              <td>{processDate(question.updated)}</td>
             </tr>
           ))}
         </tbody>

@@ -2,6 +2,7 @@ const response = require("../../utils/response");
 const {
   fetchAnsQuery,
   fetchSingleAnsQuery,
+  fetchSingleQuesAnsQuery,
   fetchMyAnsQuery,
   createAnsQuery,
   updateAnsQuery,
@@ -38,6 +39,20 @@ const fetchSingleAns = async (req, res, next) => {
   const id = req.params.id;
   try {
     const { error, output } = await fetchSingleAnsQuery(id);
+    if (error || output.length == 0) {
+      throw new CustomError("Error fetching single answers", 401);
+    } else {
+      response(200, "Answer retrieved successfully", output, res);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const fetchSingleQuesAns = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const { error, output } = await fetchSingleQuesAnsQuery(id);
     if (error || output.length == 0) {
       throw new CustomError("Error fetching single answers", 401);
     } else {
@@ -97,4 +112,4 @@ const deleteAns = async (req, res, next) => {
   }
 };
 
-module.exports = { fetchAns, fetchSingleAns, fetchMyAns, createAns, updateAns, deleteAns };
+module.exports = { fetchAns, fetchSingleAns, fetchSingleQuesAns, fetchMyAns, createAns, updateAns, deleteAns };

@@ -25,6 +25,21 @@ const fetchSingleAnsQuery = async (id) => {
   }
 };
 
+const fetchSingleQuesAnsQuery = async (id) => {
+  try {
+    const connection = await pool.getConnection();
+    const [rows] = await connection.execute(
+      "SELECT * FROM answers where qid = ?", [id]);
+    setTimeout(() => {
+      connection.release();
+    }, 250);
+    if (rows) connection.release();
+    return { error: null, output: rows };
+  } catch (error) {
+    return { error: error, output: null };
+  }
+};
+
 const fetchMyAnsQuery = async (id) => {
 
   try {
@@ -81,6 +96,7 @@ const deleteAnsQuery = async (id) => {
 module.exports = {
   fetchAnsQuery,
   fetchSingleAnsQuery,
+  fetchSingleQuesAnsQuery,
   fetchMyAnsQuery,
   createAnsQuery,
   updateAnsQuery,

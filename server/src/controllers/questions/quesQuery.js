@@ -16,7 +16,7 @@ const fetchQuesQuery = async () => {
     }
 };
 const fetchSingleQuesQuery = async (id) => {
-
+    console.log(id);
     try {
         const connection = await pool.getConnection();
         const [rows] = await connection.execute('SELECT * FROM questions where qid = ?', [id]);

@@ -42,6 +42,7 @@ const fetchMyQues = async (req, res, next) => {
 
 const fetchSingleQues = async (req, res, next) => {
   var id = req.params.id;
+
   try {
     const { error, output } = await fetchSingleQuesQuery(id);
     if (error || output.length == 0) {
