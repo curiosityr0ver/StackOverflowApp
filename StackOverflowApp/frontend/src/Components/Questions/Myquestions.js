@@ -4,16 +4,25 @@ import NewQuestionModal from '../../Components/NewQuestionModal';
 import axios from "axios";
 import { SmallCloseIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
 import "./Allques.css";
-import { Switch } from '@chakra-ui/react';
+import { Switch, FormControl, FormLabel } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
 const Myquestions = () => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
+
+
   useEffect(() => {
-    fetchMyQuestions();
-    fetchAllAnswers();
-  }, []);
+    if (show) {
+      fetchAllQuestions();
+      fetchAllAnswers();
+    } else {
+      fetchMyQuestions();
+      fetchMyAnswers();
+    }
+  }, [show]);
+
 
   const fetchMyQuestions = async () => {
 
@@ -58,7 +67,6 @@ const Myquestions = () => {
       console.log(err);
     }
   };
-
   const handleAnswerDelete = async (id) => {
     // return console.log(id);
     try {
@@ -89,7 +97,6 @@ const Myquestions = () => {
       console.log(err);
     }
   };
-
   const processDate = (date) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", {
       year: 'numeric',
@@ -106,7 +113,13 @@ const Myquestions = () => {
 
 
   return (
-    <div className="container">
+    <div style={{ minHeight: "100vh" }} className="container">
+      <FormControl display='flex' alignItems='center'>
+        <FormLabel htmlFor='email-alerts' mb='0'>
+          {show ? "Show my questions and answers" : "Shows all questions and answers"}
+        </FormLabel>
+        <Switch id='email-alerts' onChange={(e) => setShow(!show)} />
+      </FormControl>
       <h4>My Questions</h4>
       <table>
         <thead>

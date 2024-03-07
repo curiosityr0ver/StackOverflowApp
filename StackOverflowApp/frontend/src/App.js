@@ -1,10 +1,8 @@
-import "./App.css";
-
 import Index from "./StackRoutes/Index";
 
 function App() {
   return (
-    <div className="App">
+    <div style={{ minHeight: "100vh" }} className="App">
       <Index />
     </div>
   );

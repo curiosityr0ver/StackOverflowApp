@@ -72,6 +72,11 @@ h5 {
     margin-right: 10px;
   }   */
 .container {
+  /* background-color: red; */
+  min-height: "1200px";
+}
+
+.container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
