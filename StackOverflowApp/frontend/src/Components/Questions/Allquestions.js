@@ -1,13 +1,17 @@
 import axios from "axios";
 import "./Allques.css";
 import { Box, Button } from '@chakra-ui/react';
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
+import { StackContext } from "../../context/StackContext";
 import { Link } from "react-router-dom";
+import CustomTable from '../CustomTable';
+
 function Allquestions() {
-  const [questions, setQuestions] = useState([]);
+  const { questions, setQuestions } = useContext(StackContext);
+
   useEffect(() => {
     // let mounted = true;
-
+    // console.log({ stackState });
     fetchQuestions();
     return () => {
       // mounted = false;
@@ -17,9 +21,7 @@ function Allquestions() {
   const fetchQuestions = async () => {
     try {
       const { data } = await axios.get("http://localhost:5000/ques");
-      // if (mounted) {
       setQuestions(data.body);
-      // }
     } catch (error) {
       console.error("Error fetching questions:", error);
     }
@@ -51,26 +53,7 @@ function Allquestions() {
         </Link>
       </Box>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Created</th>
-            <th>Updated</th>
-          </tr>
-        </thead>
-        <tbody>
-          {questions.map((question) => (
-            <tr key={question.qid}>
-              <td>{question.title}</td>
-              <td>{question.description}</td>
-              <td>{processDate(question.created)}</td>
-              <td>{processDate(question.updated)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {questions && <CustomTable questions={questions} />}
     </div>
   );
   // return (
