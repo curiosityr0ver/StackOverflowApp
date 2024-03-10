@@ -5,7 +5,7 @@ export const StackProvider = ({ children }) => {
 	const [questions, setQuestions] = useState([]);
 	const [answers, setAnswers] = useState([]);
 	const [comments, setComments] = useState([]);
-	const [loggedInUser, setLoggedInUser] = useState({ name: "wut" });
+	const [loggedInUser, setLoggedInUser] = useState();
 
 	return (
 		<StackContext.Provider

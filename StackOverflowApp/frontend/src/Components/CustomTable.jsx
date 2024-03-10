@@ -1,6 +1,7 @@
 import React from "react";
 
 function CustomTable({ questions, answers, comments }) {
+	console.log(questions);
 	if (questions)
 		return (
 			<table>

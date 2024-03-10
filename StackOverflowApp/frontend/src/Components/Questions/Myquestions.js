@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Button } from '@chakra-ui/react';
 import NewQuestionModal from '../../Components/NewQuestionModal';
 import axios from "axios";
@@ -6,46 +6,23 @@ import { SmallCloseIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
 import "./Allques.css";
 import { Switch, FormControl, FormLabel } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
+import { StackContext } from "../../context/StackContext";
+import CustomTable from '../CustomTable';
+
 const Myquestions = () => {
-  const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
-  const [show, setShow] = useState(false);
+  const { questions, setQuestions, loggedInUser, setLoggedInUser } = useContext(StackContext);
+  const [showAll, setShowAll] = useState(false);
   const navigate = useNavigate();
 
 
   useEffect(() => {
-    if (show) {
-      fetchAllQuestions();
-      fetchAllAnswers();
-    } else {
-      fetchMyQuestions();
-      fetchMyAnswers();
-    }
-  }, [show]);
+    if (!loggedInUser) setLoggedInUser(localStorage.getItem("user"));
+    // console.log(loggedInUser);
+    console.log(questions);
+  }, [showAll]);
 
 
-  const fetchMyQuestions = async () => {
-
-    try {
-      const { data } = await axios.get(
-        "http://localhost:5000/ques/my",
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-      );
-      if (data.body) setQuestions(data.body);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const fetchAllQuestions = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:5000/ques");
-      // console.log(data);
-      if (data.body) setQuestions(data.body);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   const fetchAllAnswers = async () => {
     try {
       const { data } = await axios.get(
@@ -116,41 +93,12 @@ const Myquestions = () => {
     <div style={{ minHeight: "100vh" }} className="container">
       <FormControl display='flex' alignItems='center'>
         <FormLabel htmlFor='email-alerts' mb='0'>
-          {show ? "Show my questions and answers" : "Shows all questions and answers"}
+          {showAll ? "Show my questions and answers" : "Shows all questions and answers"}
         </FormLabel>
-        <Switch id='email-alerts' onChange={(e) => setShow(!show)} />
+        <Switch id='email-alerts' onChange={(e) => setShowAll(!showAll)} />
       </FormControl>
       <h4>My Questions</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Created</th>
-            <th>Updated</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {questions.map((question) => {
-            // console.log(processDate(question.created));
-            return (
-              <tr key={question.qid}>
-                <td>{question.title}</td>
-                <td>{question.description}</td>
-                <td>{processDate(question.created)}</td>
-                <td>{processDate(question.updated)}</td>
-                <td> <Box display={"flex"} justifyContent={"space-around"}>
-                  <NewQuestionModal > <EditIcon _hover={{ color: "darkgrey" }} /> </NewQuestionModal>
-                  <SmallCloseIcon onClick={() => handleQuestionDelete(question.qid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
-                  <LinkIcon onClick={() => navigate(`../ques/single/${question.qid}`)} _hover={{ color: "darkgrey" }} />
-
-                </Box></td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <CustomTable questions={showAll ? questions : questions.filter(question => question.userid == loggedInUser)} />
       <h4>My Answers</h4>
       <table>
         <thead>

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 // import "../AtomComponents/styles.css"
 import "../AtomComponent/style.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { StackContext } from "../../context/StackContext";
 
 function Login() {
 
@@ -15,9 +16,10 @@ function Login() {
   } = useForm();
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
+  const { loggedInUser, setLoggedInUser } = useContext(StackContext);
 
   useEffect(() => {
-
+    console.log(loggedInUser);
   }, []);
 
 
@@ -39,16 +41,16 @@ function Login() {
 
         {
           headers: {
-            //   "Access-Control-Allow-Origin": true,
             "Content-Type": "application/json",
-          },
+          }
         }
       );
-      console.log(data);
+      // console.log(data);
       // return;
       if (data.statuscode === 200) {
         localStorage.setItem("token", data.body);
-        window.alert("User Loggedin Successfully");
+        localStorage.setItem("user", userid);
+        setLoggedInUser(userid);
         navigate("/ques/myquestions");
       } else {
         window.alert("Incorrect username or password");
