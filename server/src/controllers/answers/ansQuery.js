@@ -55,14 +55,19 @@ const fetchMyAnsQuery = async (id) => {
   }
 };
 
-const createAnsQuery = async (userid, qid, description) => {
+const createAnsQuery = async (userid, description) => {
   try {
     const connection = await pool.getConnection();
     const [rows] = await connection.execute(
-      "INSERT INTO answers(userid, qid, description) Values(?,?,?)",
-      [userid, qid, description]
+      "INSERT INTO answers(userid, description) Values(?,?)",
+      [userid, description]
     );
-    return { error: null, output: rows };
+    if (rows) {
+      const [data] = await connection.execute(
+        "SELECT * FROM answers ORDER BY created DESC LIMIT 1");
+      return { error: null, output: data[0] };
+    }
+    return { error: "Failed to Insert Answer", output: null };
   } catch (error) {
     return { error: error, output: null };
   }

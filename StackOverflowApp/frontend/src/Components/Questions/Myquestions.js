@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Box, Button } from '@chakra-ui/react';
-import NewQuestionModal from '../../Components/NewQuestionModal';
+import CustomCreateModal from "../CustomCreateModal";
 import axios from "axios";
 import { SmallCloseIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
 import "./Allques.css";
@@ -8,18 +8,36 @@ import { Switch, FormControl, FormLabel } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
 import { StackContext } from "../../context/StackContext";
 import CustomTable from '../CustomTable';
+import { fetchResources } from "../../config/APIcalls";
+
 
 const Myquestions = () => {
-  const { questions, setQuestions, answers, setAnswers, loggedInUser, setLoggedInUser } = useContext(StackContext);
+  const { questions, setQuestions, answers, setAnswers, comments, setComments, loggedInUser, setLoggedInUser } = useContext(StackContext);
   const [showAll, setShowAll] = useState(false);
   const navigate = useNavigate();
 
 
   useEffect(() => {
+    fetchQuestions();
+    fetchAnswers();
+    fetchComments();
+  }, []);
+
+  useEffect(() => {
     if (!loggedInUser) setLoggedInUser(localStorage.getItem("user"));
-    // console.log(loggedInUser);
-    // console.log(answers);
   }, [showAll]);
+  const fetchQuestions = async () => {
+    const data = await fetchResources("ques");
+    setQuestions(data);
+  };
+  const fetchAnswers = async () => {
+    const data = await fetchResources("ans");
+    setAnswers(data);
+  };
+  const fetchComments = async () => {
+    const data = await fetchResources("comments");
+    setComments(data);
+  };
 
 
   const fetchAllAnswers = async () => {
@@ -100,9 +118,7 @@ const Myquestions = () => {
       <CustomTable questions={showAll ? questions : questions.filter(question => question.userid == loggedInUser)} />
       <h4>My Answers</h4>
       <CustomTable answers={showAll ? answers : answers.filter(answer => answer.userid == loggedInUser)} />
-      <NewQuestionModal >
-        <Button colorScheme='blue'>New Question</Button>
-      </NewQuestionModal>
+      <CustomCreateModal type={"Question"} />
     </div>
   );
 };

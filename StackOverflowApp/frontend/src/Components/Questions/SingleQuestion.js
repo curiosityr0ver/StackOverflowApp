@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button } from '@chakra-ui/react';
-import NewAnswerModal from '../NewAnswerModal';
+import NewAnswerModal from '../CustomEditModal';
 import axios from "axios";
 import { SmallCloseIcon, EditIcon, LinkIcon } from '@chakra-ui/icons';
 import { useLocation } from 'react-router-dom';

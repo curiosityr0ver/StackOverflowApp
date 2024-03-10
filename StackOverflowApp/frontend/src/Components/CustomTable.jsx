@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import NewQuestionModal from "./NewQuestionModal";
-import NewAnswerModal from "././NewAnswerModal";
+import CustomModal from "./CustomEditModal";
 import { SmallCloseIcon, EditIcon, LinkIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { StackContext } from "../context/StackContext";
@@ -50,10 +49,9 @@ function CustomTable({ questions, answers, comments }) {
 							<td>
 								{" "}
 								<Box display={"flex"} justifyContent={"space-around"}>
-									<NewAnswerModal qid={qid}>
-										{" "}
+									<CustomModal type={"Question"} qid={qid}>
 										<EditIcon _hover={{ color: "darkgrey" }} />{" "}
-									</NewAnswerModal>
+									</CustomModal>
 									<SmallCloseIcon
 										onClick={() => handleQuestionDelete(qid)}
 										color={"white"}

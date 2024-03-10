@@ -64,7 +64,7 @@ const createQues = async (req, res, next) => {
       title,
       description
     );
-    console.log(output);
+    // console.log(output);
     if (error) {
       throw new CustomError("Error creating question", 401);
     } else {

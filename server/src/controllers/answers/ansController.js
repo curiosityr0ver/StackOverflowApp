@@ -64,17 +64,16 @@ const fetchSingleQuesAns = async (req, res, next) => {
 };
 
 const createAns = async (req, res, next) => {
-  const { qid, description } = req.body;
+  const { description } = req.body;
   const { userid } = req.user;
-  console.log("Hereeeee");
   // return console.log(userid, qid, description);
 
   try {
     const { error, output } = await createAnsQuery(
       userid,
-      qid,
       description
     );
+    console.log(output);
     if (error) {
       throw new CustomError("Error creating answers", 401);
     } else {

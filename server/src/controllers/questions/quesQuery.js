@@ -52,7 +52,13 @@ const createQuesQuery = async (userid, title, description) => {
         setTimeout(() => {
             connection.release();
         }, 250);
-        if (rows) connection.release();
+        if (rows) {
+            const [data] = await connection.execute(
+                "SELECT * FROM questions ORDER BY created DESC LIMIT 1");
+            if (data) connection.release();
+            return { error: null, output: data[0] };
+        }
+        return { error: "Failed to Question Answer", output: null };
         // console.log(rows);
         return { error: null, output: rows };
     } catch (error) {
