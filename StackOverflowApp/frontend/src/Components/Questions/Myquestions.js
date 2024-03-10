@@ -10,8 +10,7 @@ import { StackContext } from "../../context/StackContext";
 import CustomTable from '../CustomTable';
 
 const Myquestions = () => {
-  const [answers, setAnswers] = useState([]);
-  const { questions, setQuestions, loggedInUser, setLoggedInUser } = useContext(StackContext);
+  const { questions, setQuestions, answers, setAnswers, loggedInUser, setLoggedInUser } = useContext(StackContext);
   const [showAll, setShowAll] = useState(false);
   const navigate = useNavigate();
 
@@ -19,7 +18,7 @@ const Myquestions = () => {
   useEffect(() => {
     if (!loggedInUser) setLoggedInUser(localStorage.getItem("user"));
     // console.log(loggedInUser);
-    console.log(questions);
+    // console.log(answers);
   }, [showAll]);
 
 
@@ -100,44 +99,12 @@ const Myquestions = () => {
       <h4>My Questions</h4>
       <CustomTable questions={showAll ? questions : questions.filter(question => question.userid == loggedInUser)} />
       <h4>My Answers</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th>Created</th>
-            <th>Updated</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {answers.map((answer) => (
-            <tr key={answer.aid}>
-              <td>{answer.description}</td>
-              <td >{processDate(answer.created)}</td>
-              <td>{processDate(answer.updated)}</td>
-              <td> <Box display={"flex"} justifyContent={"space-around"}>
-                <EditIcon _hover={{ color: "darkgrey" }} />
-                <SmallCloseIcon onClick={() => handleAnswerDelete(answer.aid)} color={"white"} bg={"grey"} _hover={{ bg: "darkgrey" }} />
-                <LinkIcon onClick={() => navigate(`../ans/single/${answer.aid}`)} _hover={{ color: "darkgrey" }} />
-              </Box></td>
-            </tr>
-          ))}
-        </tbody>
-
-        <NewQuestionModal >
-          <Button colorScheme='blue'>Button</Button>
-        </NewQuestionModal>
-
-      </table>
+      <CustomTable answers={showAll ? answers : answers.filter(answer => answer.userid == loggedInUser)} />
+      <NewQuestionModal >
+        <Button colorScheme='blue'>New Question</Button>
+      </NewQuestionModal>
     </div>
-
-
-
-
-
-
   );
-
 };
 
 export default Myquestions;

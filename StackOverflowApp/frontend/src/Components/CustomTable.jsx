@@ -1,8 +1,73 @@
-import React from "react";
+import React, { useContext } from "react";
+import NewQuestionModal from "./NewQuestionModal";
+import NewAnswerModal from "././NewAnswerModal";
+import { SmallCloseIcon, EditIcon, LinkIcon } from "@chakra-ui/icons";
+import axios from "axios";
+import { StackContext } from "../context/StackContext";
+
+import { Box, Button } from "@chakra-ui/react";
 
 function CustomTable({ questions, answers, comments }) {
-	console.log(questions);
+	const { setQuestions, setAnswers, loggedInUser, setLoggedInUser } =
+		useContext(StackContext);
+
+	const handleQuestionDelete = async (id) => {
+		try {
+			const { data } = await axios.delete(`http://localhost:5000/ques/${id}`, {
+				headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+			});
+			if (data) {
+				// console.log([...questions.filter((q) => q.id !== id)]);
+				setQuestions(questions.filter((q) => q.qid !== id));
+			}
+			setQuestions(questions.filter((q) => q.qid !== id));
+
+			console.log(data);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	if (questions)
+		return (
+			<table>
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Description</th>
+						<th>Created</th>
+						<th>Updated</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{questions.map(({ qid, title, description, created, updated }) => (
+						<tr key={qid}>
+							<td>{title}</td>
+							<td>{description}</td>
+							<td>{processDate(created)}</td>
+							<td>{processDate(updated)}</td>
+							<td>
+								{" "}
+								<Box display={"flex"} justifyContent={"space-around"}>
+									<NewAnswerModal qid={qid}>
+										{" "}
+										<EditIcon _hover={{ color: "darkgrey" }} />{" "}
+									</NewAnswerModal>
+									<SmallCloseIcon
+										onClick={() => handleQuestionDelete(qid)}
+										color={"white"}
+										bg={"grey"}
+										_hover={{ bg: "darkgrey" }}
+									/>
+								</Box>
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		);
+	else if (answers) {
 		return (
 			<table>
 				<thead>
@@ -14,9 +79,33 @@ function CustomTable({ questions, answers, comments }) {
 					</tr>
 				</thead>
 				<tbody>
-					{questions.map(({ qid, title, description, created, updated }) => (
-						<tr key={qid}>
-							<td>{title}</td>
+					{answers.map(({ aid, description, created, updated }) => (
+						<tr key={aid}>
+							<td>{description}</td>
+							<td>{processDate(created)}</td>
+							<td>{processDate(updated)}</td>
+						</tr>
+					))}
+					{/* <NewQuestionModal>
+						<Button colorScheme="blue">Button</Button>
+					</NewQuestionModal> */}
+				</tbody>
+			</table>
+		);
+	} else {
+		return (
+			<table>
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Description</th>
+						<th>Created</th>
+						<th>Updated</th>
+					</tr>
+				</thead>
+				<tbody>
+					{comments.map(({ cid, description, created, updated }) => (
+						<tr key={cid}>
 							<td>{description}</td>
 							<td>{processDate(created)}</td>
 							<td>{processDate(updated)}</td>
@@ -25,46 +114,6 @@ function CustomTable({ questions, answers, comments }) {
 				</tbody>
 			</table>
 		);
-	else if (answers) {
-		<table>
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Description</th>
-					<th>Created</th>
-					<th>Updated</th>
-				</tr>
-			</thead>
-			<tbody>
-				{answers.map(({ aid, description, created, updated }) => (
-					<tr key={aid}>
-						<td>{description}</td>
-						<td>{processDate(created)}</td>
-						<td>{processDate(updated)}</td>
-					</tr>
-				))}
-			</tbody>
-		</table>;
-	} else {
-		<table>
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Description</th>
-					<th>Created</th>
-					<th>Updated</th>
-				</tr>
-			</thead>
-			<tbody>
-				{comments.map(({ cid, description, created, updated }) => (
-					<tr key={cid}>
-						<td>{description}</td>
-						<td>{processDate(created)}</td>
-						<td>{processDate(updated)}</td>
-					</tr>
-				))}
-			</tbody>
-		</table>;
 	}
 }
 

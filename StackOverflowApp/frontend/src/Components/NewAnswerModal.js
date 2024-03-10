@@ -23,6 +23,7 @@ const NewTaskModal = ({ qid, children }) => {
     const [description, setDescription] = useState("sampleDesc");
     const [type, setType] = useState("Answer");
     const toast = useToast();
+    console.log(qid);
 
 
     // const { user, tasks, setTasks } = TaskState();
