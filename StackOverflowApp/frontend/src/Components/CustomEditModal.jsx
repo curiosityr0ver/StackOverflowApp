@@ -17,7 +17,10 @@ import axios from "axios";
 import { useState, useContext } from "react";
 import { StackContext } from "../context/StackContext";
 
-const CustomModal = ({ qid, aid, cid, type, children }) => {
+const CustomModal = ({ id, type, children }) => {
+	const qid = id;
+	const aid = id;
+	const cid = id;
 	const {
 		questions,
 		setQuestions,
@@ -28,10 +31,6 @@ const CustomModal = ({ qid, aid, cid, type, children }) => {
 		loggedInUser,
 		setLoggedInUser,
 	} = useContext(StackContext);
-
-	console.log(
-		questions.filter((question) => question.qid == qid)[0].description
-	);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [title, setTitle] = useState(
@@ -56,12 +55,13 @@ const CustomModal = ({ qid, aid, cid, type, children }) => {
 		try {
 			const { data } = await axios.put(
 				`http://localhost:5000/${
-					type == "Question" ? "ques" : type == "Answer" ? "ans" : "comments"
+					type === "Question"
+						? `ques/${id}`
+						: type === "Answer"
+						? `ans/${id}`
+						: `comments/${id}`
 				}`,
 				{
-					qid: qid,
-					aid: aid,
-					cid: cid,
 					title: title,
 					description: description,
 				},

@@ -29,7 +29,7 @@ const fetchQues = async (req, res, next) => {
 const fetchMyQues = async (req, res, next) => {
   const { userid } = req.user;
   try {
-    const { error, output } = await fetchMyQuesQuery(userid);
+    const { error, output } = await fetchMyQuesQuery([userid]);
     if (error) {
       throw new CustomError("Error fetching questions", 401);
     } else {
@@ -41,10 +41,10 @@ const fetchMyQues = async (req, res, next) => {
 };
 
 const fetchSingleQues = async (req, res, next) => {
-  var id = req.params.id;
+  const { id } = req.params;
 
   try {
-    const { error, output } = await fetchSingleQuesQuery(id);
+    const { error, output } = await fetchSingleQuesQuery([id]);
     if (error || output.length == 0) {
       throw new CustomError("Error fetching the required question", 401);
     } else {
@@ -60,9 +60,9 @@ const createQues = async (req, res, next) => {
   const { title, description } = req.body;
   try {
     const { error, output } = await createQuesQuery(
-      userid,
-      title,
-      description
+      [userid,
+        title,
+        description]
     );
     // console.log(output);
     if (error) {
@@ -76,10 +76,11 @@ const createQues = async (req, res, next) => {
 };
 
 const updateQues = async (req, res, next) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const { title, description } = req.body;
+
   try {
-    const { error, output } = await updateQuesQuery(title, description, id);
+    const { error, output } = await updateQuesQuery([title, description, id]);
     if (error) {
       throw new CustomError("Error updating question", 401);
     } else {
@@ -91,10 +92,10 @@ const updateQues = async (req, res, next) => {
 };
 
 const deleteQues = async (req, res, next) => {
-  const id = req.params.id;
+  const { id } = req.params;
 
   try {
-    const { error, output } = await deleteQuesQuery(id);
+    const { error, output } = await deleteQuesQuery([id]);
     if (error) {
       throw new CustomError("Error deleting question", 401);
     } else {

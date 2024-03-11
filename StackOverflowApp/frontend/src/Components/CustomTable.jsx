@@ -3,12 +3,13 @@ import CustomModal from "./CustomEditModal";
 import { SmallCloseIcon, EditIcon, LinkIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { StackContext } from "../context/StackContext";
-
+import { useNavigate } from "react-router-dom";
 import { Box, Button } from "@chakra-ui/react";
 
 function CustomTable({ questions, answers, comments }) {
 	const { setQuestions, setAnswers, loggedInUser, setLoggedInUser } =
 		useContext(StackContext);
+	const navigate = useNavigate();
 
 	const handleQuestionDelete = async (id) => {
 		try {
@@ -40,28 +41,36 @@ function CustomTable({ questions, answers, comments }) {
 					</tr>
 				</thead>
 				<tbody>
-					{questions.map(({ qid, title, description, created, updated }) => (
-						<tr key={qid}>
-							<td>{title}</td>
-							<td>{description}</td>
-							<td>{processDate(created)}</td>
-							<td>{processDate(updated)}</td>
-							<td>
-								{" "}
-								<Box display={"flex"} justifyContent={"space-around"}>
-									<CustomModal type={"Question"} qid={qid}>
-										<EditIcon _hover={{ color: "darkgrey" }} />{" "}
-									</CustomModal>
-									<SmallCloseIcon
-										onClick={() => handleQuestionDelete(qid)}
-										color={"white"}
-										bg={"grey"}
-										_hover={{ bg: "darkgrey" }}
-									/>
-								</Box>
-							</td>
-						</tr>
-					))}
+					{questions.map(
+						({ qid, userid, title, description, created, updated }) => (
+							<tr key={qid}>
+								<td>{title}</td>
+								<td>{description}</td>
+								<td>{processDate(created)}</td>
+								<td>{processDate(updated)}</td>
+								<td>
+									{" "}
+									<Box display={"flex"} justifyContent={"space-around"}>
+										<CustomModal type={"Question"} id={qid}>
+											<EditIcon _hover={{ color: "darkgrey" }} />{" "}
+										</CustomModal>
+										<SmallCloseIcon
+											onClick={() => handleQuestionDelete(qid)}
+											_disabled={loggedInUser == userid}
+											color={"white"}
+											bg={"grey"}
+											_hover={{ bg: "darkgrey" }}
+										/>
+										<LinkIcon
+											onClick={() => navigate(`../ques/single/${qid}`)}
+											_disabled={loggedInUser == userid}
+											_hover={{ color: "darkgrey" }}
+										/>
+									</Box>
+								</td>
+							</tr>
+						)
+					)}
 				</tbody>
 			</table>
 		);

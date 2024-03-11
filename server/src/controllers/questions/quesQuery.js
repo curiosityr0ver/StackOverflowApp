@@ -15,11 +15,11 @@ const fetchQuesQuery = async () => {
         return { error: error, output: null };
     }
 };
-const fetchSingleQuesQuery = async (id) => {
+const fetchSingleQuesQuery = async (payload) => {
     console.log(id);
     try {
         const connection = await pool.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM questions where qid = ?', [id]);
+        const [rows] = await connection.execute('SELECT * FROM questions where qid = ?', payload);
         setTimeout(() => {
             connection.release();
         }, 250);
@@ -29,11 +29,11 @@ const fetchSingleQuesQuery = async (id) => {
         return { error: error, output: null };
     }
 };
-const fetchMyQuesQuery = async (id) => {
+const fetchMyQuesQuery = async (payload) => {
 
     try {
         const connection = await pool.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM questions where userid = ?', [id]);
+        const [rows] = await connection.execute('SELECT * FROM questions where userid = ?', payload);
         setTimeout(() => {
             connection.release();
         }, 250);
@@ -44,11 +44,11 @@ const fetchMyQuesQuery = async (id) => {
     }
 };
 
-const createQuesQuery = async (userid, title, description) => {
+const createQuesQuery = async (payload) => {
     // console.log(qid, userid, title, description);
     try {
         const connection = await pool.getConnection();
-        const [rows] = await connection.execute('INSERT INTO questions(userid, title, description) Values(?,?,?)', [userid, title, description]);
+        const [rows] = await connection.execute('INSERT INTO questions(userid, title, description) Values(?,?,?)', payload);
         setTimeout(() => {
             connection.release();
         }, 250);
@@ -58,24 +58,26 @@ const createQuesQuery = async (userid, title, description) => {
             if (data) connection.release();
             return { error: null, output: data[0] };
         }
-        return { error: "Failed to Question Answer", output: null };
-        // console.log(rows);
-        return { error: null, output: rows };
+        return { error: "Failed to Create Question", output: null };
     } catch (error) {
         return { error: error, output: null };
     }
 };
 
-
-const updateQuesQuery = async (title, description, id) => {
+const updateQuesQuery = async (payload) => {
+    // console.log(userid, qid, title, description);
     try {
         const connection = await pool.getConnection();
-        const [rows] = await connection.execute('Update questions set title= ?, description= ? where qid = ?', [title, description, id]);
+        const [rows] = await connection.execute('Update questions set title= ?, description= ? where qid = ?', payload);
         setTimeout(() => {
             connection.release();
         }, 250);
-        if (rows) connection.release();
-        return { error: null, output: rows };
+        if (rows) {
+            const [data] = await connection.execute(
+                "SELECT * FROM questions ORDER BY updated DESC LIMIT 1");
+            if (data) connection.release();
+            return { error: null, output: data[0] };
+        }
     } catch (error) {
         return { error: error, output: null };
     }
@@ -83,10 +85,10 @@ const updateQuesQuery = async (title, description, id) => {
 
 
 
-const deleteQuesQuery = async (id) => {
+const deleteQuesQuery = async (payload) => {
     try {
         const connection = await pool.getConnection();
-        const [rows] = await connection.execute('DELETE FROM questions where qid = ?', [id]);
+        const [rows] = await connection.execute('DELETE FROM questions where qid = ?', payload);
         setTimeout(() => {
             connection.release();
         }, 250);
